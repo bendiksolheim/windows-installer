@@ -59,7 +59,7 @@ export async function createWindowsInstaller(options) {
   const defaultLoadingGif = path.join(__dirname, '..', 'resources', 'install-spinner.gif');
   loadingGif = loadingGif ? path.resolve(loadingGif) : defaultLoadingGif;
 
-  let {certificateFile, certificatePassword, remoteReleases, signWithParams, remoteToken} = options;
+  let {certificateFile, certificatePassword, remoteReleases, signTool, signWithParams, remoteToken} = options;
 
   const metadata = {
     description: '',
@@ -154,6 +154,11 @@ export async function createWindowsInstaller(options) {
   if (useMono) {
     args.unshift(path.join(vendorPath, 'Update-Mono.exe'));
     cmd = monoExe;
+  }
+
+  if (signTool) {
+      args.push('--signTool');
+      args.push(signTool);
   }
 
   if (signWithParams) {
